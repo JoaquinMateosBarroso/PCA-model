@@ -13,21 +13,21 @@ def make_covariance_matrix(data : pd.DataFrame):
         for i in range(data.columns.size):
             new_column = []
             for j in range(data.columns.size):
-                new_column.append(PCA.covariance(data.iloc[:, i], data.iloc[:, j]))
+                new_column.append(covariance(data.iloc[:, i], data.iloc[:, j]))
             if i == 0:
-                return np.array([new_column])
+                matrix = np.array([new_column])
             else:
-                return np.append(matrix, [new_column], axis = 0)
-
-def matrix_to_PC(matrix : np.array):
-    return 
+                matrix = np.append(matrix, [new_column], axis = 0)
+        return matrix
 
 class PCA():
     def __init__(self):
         self.matrix = np.array([[]])
-        self.components = np.array([])
+        self.components = np.array([[]])
+        self.values = np.array([])
     
     #The data must be normalized in order to train the object  
-    def train(self):
-        self.matrix = make_covariance_matrix(self)
+    def train(self, data : pd.DataFrame):
+        self.matrix = make_covariance_matrix(data)
+        self.values, self.components = np.linalg.eig(self.matrix)
     
